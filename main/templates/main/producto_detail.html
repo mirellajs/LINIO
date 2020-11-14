@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="content">
+      <h3 class="title"> {{ object.nombre }} </h3>
+    </div>
+
+    <div class="columns">
+      {% for image in object.images.all %}
+      <div class="column is-3">
+          <figure class="image is-square">
+              <a href="{{ image.image.url }}">
+                  <img src="{{ image.image.url }}" alt="No hay imagen disponible">
+              </a>
+          </figure>
+      </div>
+      
+      {% empty %}
+
+      <div class="column content">
+          <p>Aún no hay imágenes disponibles</p>
+      </div>
+      {% endfor %}
+    </div>
+
+    <ul>
+      <div class="block">
+        <li><strong>Precio:</strong> {{ object.precio }}</li>
+      </div>
+      <div class="block">
+        <li><strong>Descripcion:</strong> {{ object.descripcion }}</li>
+      </div>
+      <div class="block">
+        <li><strong>Categoria:</strong> {{ object.categoria.nombre }}</li>
+      </div>
+      <div class="block">
+        <li><strong>Proveedor:</strong> {{ object.proveedor }}</li>
+      </div>
+    </ul>
+    
+    <div class="mt-4"><p></p></div>
+
+    <div class="block">
+      <a href="{% url 'add-to-cart' product_pk=object.pk %}" class='button is-primary'>
+        Añadir al carrito
+      </a>
+      <a href="{% url 'pedido-detail' %}" class='button'>
+        Ver carrito
+      </a>
+      {% if messages %}
+      {% for message in messages %}
+        <div class="notification {% if message.tags %}is-{{ message.tags }}{% endif %}">
+            <button class="delete"></button>
+            {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+    </div>
+    <div class="content">
+      <p>
+        <a href="{% url 'product-list' %}">Ver Lista de Productos</a>
+      </p>
+      <p>
+        <a href="{% url 'home' %}">Inicio</a>
+      </p>
+    </div>
+{% endblock %}
